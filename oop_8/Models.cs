@@ -8,9 +8,6 @@ namespace RealEstateAgency.Models
         public OfferLimitExceededException(string message) : base(message) { }
     }
 
-    /// <summary>
-    /// Типи нерухомості згідно з завданням.
-    /// </summary>
     public enum PropertyType
     {
         OneRoomApartment,
@@ -20,7 +17,7 @@ namespace RealEstateAgency.Models
     }
 
     /// <summary>
-    /// Відношення "Реалізація" (Realization).
+    /// Реалізація
     /// </summary>
     public interface ISearchable
     {
@@ -28,7 +25,7 @@ namespace RealEstateAgency.Models
     }
 
     /// <summary>
-    /// Клас адреси для демонстрації відношення "Композиція".
+    /// Композиція
     /// </summary>
     public class Address
     {
@@ -57,7 +54,7 @@ namespace RealEstateAgency.Models
         public PropertyType Type { get; protected set; }
 
         /// <summary>
-        /// Відношення "Композиція" (Composition). 
+        ///Композиція 
         /// </summary>
         public Address Location { get; private set; }
 
@@ -71,7 +68,6 @@ namespace RealEstateAgency.Models
 
         public bool MatchesKeyword(string keyword)
         {
-            // Залишено лише перевірку на null, щоб .Contains не викликав помилку
             if (keyword == null) return false;
             
             return Location.ToString().Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
@@ -85,7 +81,7 @@ namespace RealEstateAgency.Models
     }
 
     /// <summary>
-    /// Відношення "Узагальнення" (Generalization).
+    /// Узагальнення
     /// </summary>
     public class Apartment : Property
     {
@@ -100,7 +96,7 @@ namespace RealEstateAgency.Models
     }
 
     /// <summary>
-    /// Відношення "Узагальнення" (Generalization).
+    /// Узагальнення
     /// </summary>
     public class LandPlot : Property
     {
@@ -127,7 +123,7 @@ namespace RealEstateAgency.Models
         public decimal MaxPrice { get; set; }
 
         /// <summary>
-        /// Відношення "Агрегація" (Aggregation).
+        /// Агрегація
         /// </summary>
         private List<Property> _offers = new List<Property>();
 
@@ -145,7 +141,6 @@ namespace RealEstateAgency.Models
 
         public void AddOffer(Property property)
         {
-            // Залишено перевірку бізнес-логіки згідно з ТЗ (n < 5)
             if (_offers.Count >= 4)
                 throw new OfferLimitExceededException("Клієнт не може мати більше 4 пропозицій (n < 5).");
             
@@ -161,7 +156,6 @@ namespace RealEstateAgency.Models
 
         public bool MatchesKeyword(string keyword)
         {
-            // Залишено лише перевірку на null
             if (keyword == null) return false;
 
             return (FirstName != null && FirstName.Contains(keyword, StringComparison.OrdinalIgnoreCase)) ||
@@ -175,7 +169,7 @@ namespace RealEstateAgency.Models
     }
 
     /// <summary>
-    /// Відношення "Залежність" (Dependency).
+    /// Залежність
     /// </summary>
     public static class PropertyMatcher
     {
@@ -209,7 +203,7 @@ namespace RealEstateAgency.Models
 
         public void UpdateClient(Client client, string firstName, string lastName, string bankAccount, PropertyType desiredType, decimal maxPrice)
         {
-            if (client == null) return; // Перевірка на null
+            if (client == null) return; 
             
             client.FirstName = firstName;
             client.LastName = lastName;
@@ -232,7 +226,7 @@ namespace RealEstateAgency.Models
 
         public void RemoveProperty(Property property)
         {
-            if (property == null) return; // Перевірка на null
+            if (property == null) return;
             
             _properties.Remove(property);
             foreach (var client in _clients)
@@ -243,7 +237,7 @@ namespace RealEstateAgency.Models
 
         public void UpdatePropertyBasicData(Property property, decimal newPrice, double newArea)
         {
-            if (property == null) return; // Перевірка на null
+            if (property == null) return;
             
             property.Price = newPrice;
             property.Area = newArea;
